@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import {body} from 'express-validator';
-import {createAccount, login, getUser, createTask, getTasks} from './handler/UserHandler'
+import {body, param} from 'express-validator';
+import {createAccount, login, getUser, createTask, getTasks, updateTasks} from './handler/UserHandler'
 import {handleInputErrors} from './middleware/validation';
 import {authenticate} from './middleware/auth';
 
@@ -44,12 +44,25 @@ router.post('/createTask',
         .optional()
         .isString(),
     body('completed')
-        .notEmpty(),
+        .optional()
+        .isBoolean(),
     handleInputErrors,
     createTask
 )
 
 // Obtener todas las tareas del usuario autenticado
 router.get('/tasks', authenticate, getTasks);
+
+router.patch('/tasks/:id',
+    authenticate,
+    param('id')
+        .isMongoId()
+        .withMessage('ID de tarea inválido'),
+    body('completed')
+        .isBoolean()
+        .withMessage('completed debe ser booleano'),
+    handleInputErrors,
+    updateTasks
+);
 
 export default router;

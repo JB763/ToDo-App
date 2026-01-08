@@ -76,3 +76,21 @@ export const getTasks = async(req: Request, res: Response) => {
   }
 }
 
+// actualizar tarea, completado o no
+export const updateTasks = async(req: Request, res: Response) => {
+    try{
+        const {completed} = req.body;
+        const { id } = req.params;
+        const task = await Task.findOne({ _id: id, user: req.user!._id });
+        if(!task){
+            const error = new Error("La tarea no existe");
+            return res.status(404).json({error: error.message})
+        }
+        task.completed = completed;
+        await task.save();
+        res.json(task);
+    }catch(e){
+        const error = new Error("Error al actualizar la tarea");
+        return res.status(500).json({error: error.message})
+    }
+}

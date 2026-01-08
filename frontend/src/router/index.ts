@@ -3,7 +3,6 @@ import Login from '../views/Login.vue';
 import registrarUsuario from '../views/Register.vue';
 import Dashboard from '../views/dashboard.vue';
 
-
 const routes = [
     {
         path: '/', redirect: '/login'
@@ -16,7 +15,7 @@ const routes = [
     },
     {
         path: '/dashboard', component: Dashboard, meta: {requiresAuth: true}
-    }
+    },
 ]
 
 export const router = createRouter({
