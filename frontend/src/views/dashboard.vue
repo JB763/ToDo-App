@@ -104,6 +104,18 @@ const createTask = async () => {
     creatingTask.value = false;
   }
 };
+
+const deleteTask = async (taskId: string) => {
+  try {
+    await api.delete(`/tasks/${taskId}`);
+    toast.success('Tarea eliminada');
+    await getTasks();
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      toast.error(error.response.data.error);
+    }
+  }
+};
 </script>
 
 <template>
@@ -177,9 +189,17 @@ const createTask = async () => {
               </span>
             </div>
 
-            <span class="text-xs text-slate-500">
-              {{ new Date(task.createdAt).toLocaleDateString() }}
-            </span>
+            <div class="flex items-center gap-3">
+              <span class="text-xs text-slate-500">
+                {{ new Date(task.createdAt).toLocaleDateString() }}
+              </span>
+              <button
+                @click="deleteTask(task._id)"
+                class="rounded-md bg-red-600 px-3 py-1 text-xs font-medium text-white hover:bg-red-700 transition-colors"
+              >
+                Eliminar
+              </button>
+            </div>
           </li>
         </ul>
 

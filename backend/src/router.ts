@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {body, param} from 'express-validator';
-import {createAccount, login, getUser, createTask, getTasks, updateTasks} from './handler/UserHandler'
+import {createAccount, login, getUser, createTask, getTasks, updateTasks, deleteTask} from './handler/UserHandler'
 import {handleInputErrors} from './middleware/validation';
 import {authenticate} from './middleware/auth';
 
@@ -64,5 +64,14 @@ router.patch('/tasks/:id',
     handleInputErrors,
     updateTasks
 );
+
+router.delete('/tasks/:id',
+    authenticate,
+    param('id')
+        .isMongoId()
+        .withMessage("Id de tarea invalido"),
+    handleInputErrors,
+    deleteTask
+)
 
 export default router;

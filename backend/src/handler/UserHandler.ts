@@ -94,3 +94,20 @@ export const updateTasks = async(req: Request, res: Response) => {
         return res.status(500).json({error: error.message})
     }
 }
+
+// eliminar tarea
+export const deleteTask = async(req: Request, res: Response) => {
+    const {id} = req.params;
+    const taskExists = await Task.findById({_id: id})
+    if(!taskExists){
+        const error = new Error("La tarea no existe");
+        return res.status(404).json({error: error.message})
+    }
+    try{
+        await Task.deleteOne({_id: id, user: req.user!._id});
+        return res.status(200).send("Tarea eliminada exitosamente");
+    }catch(e){
+        const error = new Error("Error al eliminar la tarea");
+        return res.status(500).json({error: error.message})
+    }
+}
