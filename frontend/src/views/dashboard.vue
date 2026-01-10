@@ -89,7 +89,7 @@ const createTask = async () => {
 
   try {
     creatingTask.value = true;
-    await api.post('/createTask', newTask.value);
+    await api.post('/tasks', newTask.value);
 
     toast.success('Tarea creada');
     showCreateModal.value = false;

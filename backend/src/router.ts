@@ -16,8 +16,8 @@ router.post('/register',
     .withMessage("El email es requerido")
     .isEmail(),
     body('password')
-    .isLength({min: 8, max: 8})
-    .withMessage("La contraseña debe contener 8 caracteres"),
+    .isLength({min: 8, max: 32})
+    .withMessage("La contraseña debe contener entre 8 y 32 caracteres"),
     body('age')
     .notEmpty()
     .withMessage("La edad es necesaria"),
@@ -36,7 +36,7 @@ router.post('/login',
 router.get('/user', authenticate, getUser);
 
 //Rutas de Task, deben estar autenticadas
-router.post('/createTask',
+router.post('/tasks',
     authenticate,
     body('title')
         .notEmpty(),
